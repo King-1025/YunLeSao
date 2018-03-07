@@ -1,0 +1,2 @@
+include ':app', ':_ocr_ui'
+project(':_ocr_ui').projectDir = new File('ocr_ui')
