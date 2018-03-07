@@ -120,8 +120,7 @@ public class MainActivity extends BasedActivity {
     }
 }
 
-/**
- *
+/*测试部分
  @OnClick(R.id.test_button)void test(){
 
  if(!hasGotToken){
