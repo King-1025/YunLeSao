@@ -10,6 +10,7 @@ import king.yunlesao.R;
 
 /**
  * Created by King on 2018/1/3.
+ * 高级模式碎片
  */
 
 public class AdvancedModeFragment extends AbilityFragment {
@@ -19,11 +20,4 @@ public class AdvancedModeFragment extends AbilityFragment {
         return inflater.inflate(R.layout.advanced_mode_fragment,container,false);
     }
 
-    public static AdvancedModeFragment newInstance(int index,String name,String description) {
-        AdvancedModeFragment advancedModeFragment = new AdvancedModeFragment();
-        if(name==null){name="AdvancedModeFragment";}
-        if(description==null){description="AdvancedMode";}
-        mark(advancedModeFragment,index,name,description);
-        return advancedModeFragment;
-    }
 }

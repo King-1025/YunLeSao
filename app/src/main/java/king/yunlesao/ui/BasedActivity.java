@@ -10,42 +10,45 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import king.yunlesao.R;
 
 /**
  * Created by King on 2018/1/3.
+ * BasedActivity作为其他Activity的一个父类
  */
 
 public class BasedActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         BottomNavigationView.OnNavigationItemSelectedListener {
+
+    private final static String TAG="BasedActivity";
+    protected FragmentManager fragmentManager;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        fragmentManager=getFragmentManager();
+        Log.i(TAG,"onCreate() is OK!");
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Log.i(TAG,"onNavigationItemSelected() is OK!");
         return false;
     }
 
+    //设置没有标题的工具栏
     protected void setToolBarNoTitle(Toolbar toolbar){
-        //启用工具栏
         setSupportActionBar(toolbar);
-        //标题为空
         getSupportActionBar().setTitle(null);
-    }
-    protected void replaceFragment(int layout_id,Fragment fragment ){
-        FragmentManager fm=getFragmentManager();
-        BasedFragment.replaceFragment(fm,layout_id,fragment);
+        Log.i(TAG,"setToolBarTitle() is OK!");
     }
 
-    public static final int TEST_AUTO=0x1;
-    public static final int TEST_ADVANCE=0x2;
-    public interface Test{
-        void change(int flag);
-    }
+   protected BasedFragment show(BasedFragment currentFragment,BasedFragment targetFragment,int resid){
+        return BasedFragment.show(fragmentManager,currentFragment,targetFragment,resid);
+   }
+
 }

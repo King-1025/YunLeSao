@@ -10,17 +10,19 @@ import king.yunlesao.R;
 
 /**
  * Created by King on 2018/1/3.
+ * 历史记录碎片
  */
 
 public class HistoryFragment extends BasedFragment {
+
+//    public static HistoryFragment newInstance() {
+//        return new HistoryFragment();
+//    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.history_fragment,container,false);
     }
-    public static HistoryFragment newInstance(int index) {
-        HistoryFragment historyFragment = new HistoryFragment();
-        mark(historyFragment,index,null,null);
-        return historyFragment;
-    }
+
 }

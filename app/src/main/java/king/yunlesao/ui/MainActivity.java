@@ -1,5 +1,6 @@
 package king.yunlesao.ui;
 
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -8,37 +9,34 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import king.yunlesao.R;
 
+/**
+ * Created by King on 2018/3/26.
+ * 主页
+ */
+
 public class MainActivity extends BasedActivity {
+
     //总体布局
     @BindView(R.id.main_layout)DrawerLayout drawer;
     //工具栏
-    @BindView(R.id.main_toolbar) Toolbar toolbar;
+    @BindView(R.id.main_toolbar)Toolbar toolbar;
     //侧边栏
     @BindView(R.id.left_navigation)NavigationView leftNavigationView;
     //底部导航栏
     @BindView(R.id.bottom_navigation)BottomNavigationView bottomNavigationView;
 
-    @OnClick(R.id.auto)void auto(){
-        if(test!=null){
-            test.change(TEST_AUTO);
-        }
-    }
-    @OnClick(R.id.advance)void advance(){
-        if(test!=null){
-            test.change(TEST_ADVANCE);
-        }
-    }
     private HomeFragment homeFragment;
     private HistoryFragment historyFragment;
-    private Test test;
+    private BasedFragment currentFragment;
+    private final static String TAG="MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +46,25 @@ public class MainActivity extends BasedActivity {
         setToolBarNoTitle(toolbar);
         initLeftNavigation();
         initBottomNavigation();
-        initContentView();
+        if(savedInstanceState==null){
+            homeFragment= (HomeFragment) BasedFragment.makeFragment(BasedFragment.HOME_FRAGMENT);
+            historyFragment= (HistoryFragment) BasedFragment.makeFragment(BasedFragment.HISTORY_FRAGMENT);
+        }
+        show(homeFragment);
+    }
+
+    private void initLeftNavigation(){
+        //侧边栏初始化
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        //侧边栏菜单启用监听
+        leftNavigationView.setNavigationItemSelectedListener(this);
+    }
+    private void initBottomNavigation(){
+        //底部导航栏启用监听
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
     }
 
     @Override
@@ -77,10 +93,10 @@ public class MainActivity extends BasedActivity {
                 Toast.makeText(getApplicationContext(),"nav_slideshow",Toast.LENGTH_LONG).show();
                 break;
             case R.id.bottom_navigation_home:
-                replaceFragment(R.id.view_content,homeFragment);
+                show(homeFragment);
                 return true;
             case R.id.bottom_navigation_history:
-                replaceFragment(R.id.view_content,historyFragment);
+                show(historyFragment);
                 return true;
         }
 
@@ -90,33 +106,8 @@ public class MainActivity extends BasedActivity {
         return true;
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-    }
-
-    private void initLeftNavigation(){
-        //侧边栏初始化
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-        //侧边栏菜单启用监听
-        leftNavigationView.setNavigationItemSelectedListener(this);
-    }
-    private void initBottomNavigation(){
-        //底部导航栏启用监听
-        bottomNavigationView.setOnNavigationItemSelectedListener(this);
-    }
-    public void initContentView(){
-        homeFragment=HomeFragment.newInstance(0);
-        historyFragment=HistoryFragment.newInstance(0);
-        setTest(homeFragment);
-        replaceFragment(R.id.view_content,homeFragment);
-    }
-    public void setTest(Test test){
-        this.test=test;
+    private void show(BasedFragment basedFragment){
+        currentFragment=show(currentFragment,basedFragment,R.id.view_content);
     }
 }
 
@@ -157,7 +148,8 @@ public class MainActivity extends BasedActivity {
  if (requestCode == REQUEST_CODE_GENERAL_BASIC && resultCode == Activity.RESULT_OK) {
  GeneralBasicParams param = new GeneralBasicParams();
  param.setDetectDirection(true);
- param.setImageFile(new File(getFilesDir(), "pic.jpg"));
+ param.setImageFile(new F
+ ile(getFilesDir(), "pic.jpg"));
  OCR.getInstance().recognizeGeneralBasic(param, new OnResultListener<GeneralResult>() {
  @Override
  public void onResult(GeneralResult result) {

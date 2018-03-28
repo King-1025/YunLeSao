@@ -10,6 +10,7 @@ import king.yunlesao.R;
 
 /**
  * Created by King on 2018/1/3.
+ * 自动模式碎片
  */
 
 public class AutoModeFragment extends AbilityFragment {
@@ -17,13 +18,5 @@ public class AutoModeFragment extends AbilityFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.auto_mode_fragment,container,false);
-    }
-
-    public static AutoModeFragment newInstance(int index,String name,String description) {
-        AutoModeFragment AutoModeFragment = new AutoModeFragment();
-        if(name==null){name="AutoModeFragment";}
-        if(description==null){description="AutoMode";}
-        mark(AutoModeFragment,index,name,description);
-        return AutoModeFragment;
     }
 }
