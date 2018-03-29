@@ -54,7 +54,7 @@ public class HomeFragment extends BasedFragment {
                     BasedFragment.makeFragment(BasedFragment.ADVANCED_MODE_FRAGMENT,0,"高级","高级模式");
             fm=getChildFragmentManager();
         }
-      //  imagePageAdapter=new ImagePageAdapter(getImageList(imageId));
+      // imagePageAdapter=new ImagePageAdapter(getImageList(imageId));
       //  viewPager.setAdapter(imagePageAdapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
