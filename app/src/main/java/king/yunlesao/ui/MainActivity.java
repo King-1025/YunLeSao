@@ -1,7 +1,12 @@
 package king.yunlesao.ui;
 
-import android.app.FragmentTransaction;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
@@ -11,18 +16,28 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
+
+import com.baidu.ocr.sdk.OCR;
+import com.baidu.ocr.ui.camera.CameraActivity;
+
+import java.io.File;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import king.yunlesao.R;
+import king.yunlesao.capture.ImageCaptureManager;
+import king.yunlesao.recognition.RecognitionManager;
+import king.yunlesao.ui.iface.MainActionListener;
+import king.yunlesao.ui.iface.ModeSwitcher;
 
 /**
  * Created by King on 2018/3/26.
  * 主页
  */
 
-public class MainActivity extends BasedActivity {
+public class MainActivity extends BasedActivity implements MainActionListener{
 
     //总体布局
     @BindView(R.id.main_layout)DrawerLayout drawer;
@@ -38,6 +53,13 @@ public class MainActivity extends BasedActivity {
     private BasedFragment currentFragment;
     private final static String TAG="MainActivity";
 
+    //主事件处理handler
+    private Handler mainHandler;
+    //Action处理Handler
+    private Handler actionHandler;
+
+    //模式转换回调接口
+    private ModeSwitcher modeSwitcher;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,20 +73,17 @@ public class MainActivity extends BasedActivity {
             historyFragment= (HistoryFragment) BasedFragment.makeFragment(BasedFragment.HISTORY_FRAGMENT);
         }
         show(homeFragment);
+        setModeSwitcher(homeFragment);
+        initHandler();
     }
 
-    private void initLeftNavigation(){
-        //侧边栏初始化
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-        //侧边栏菜单启用监听
-        leftNavigationView.setNavigationItemSelectedListener(this);
+    public void setModeSwitcher(ModeSwitcher modeSwitcher){
+        this.modeSwitcher=modeSwitcher;
     }
-    private void initBottomNavigation(){
-        //底部导航栏启用监听
-        bottomNavigationView.setOnNavigationItemSelectedListener(this);
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeAllFragment();
     }
 
     @Override
@@ -81,7 +100,6 @@ public class MainActivity extends BasedActivity {
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
-
         switch (item.getItemId()) {
             case R.id.nav_camera:
                 Toast.makeText(getApplicationContext(),"nav_camera",Toast.LENGTH_LONG).show();
@@ -92,6 +110,12 @@ public class MainActivity extends BasedActivity {
             case R.id.nav_slideshow:
                 Toast.makeText(getApplicationContext(),"nav_slideshow",Toast.LENGTH_LONG).show();
                 break;
+            case R.id.auto_mode:
+                modeSwitcher.requestModeChange(HomeFragment.MODE_CHANGE_AUTO);
+                break;
+            case R.id.advanced_mode:
+                modeSwitcher.requestModeChange(HomeFragment.MODE_CHANGE_ADVANCED);
+                break;
             case R.id.bottom_navigation_home:
                 show(homeFragment);
                 return true;
@@ -99,134 +123,92 @@ public class MainActivity extends BasedActivity {
                 show(historyFragment);
                 return true;
         }
-
         //侧边栏自动关闭
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.main_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
+    private void initHandler(){
+        mainHandler=new Handler(this.getMainLooper()){
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what){
+                    case ImageCaptureManager.BAIDU_CAMERA_REQUEST_CODE_GENERAL_BASIC:
+                        String imagePath=msg.getData().getString(ImageCaptureManager.IMAGE_SAVE_PATH);
+                        Log.i(TAG,"imagePath:"+imagePath);
+                        //Toast.makeText(MainActivity.this,"imagePath:"+imagePath,Toast.LENGTH_LONG).show();
+                        boolean is=ImageCaptureManager.takePictureByBaiduCamera(MainActivity.this,imagePath);
+                        if(!is)actionHandler.sendEmptyMessage(ImageCaptureManager.FLAG_TAKE_PICTURE_ERROR);
+                        break;
+                }
+            }
+        };
+    }
+
+    private void initLeftNavigation(){
+        //侧边栏初始化
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        //侧边栏菜单启用监听
+        leftNavigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void initBottomNavigation(){
+        //底部导航栏启用监听
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
+    }
+
     private void show(BasedFragment basedFragment){
         currentFragment=show(currentFragment,basedFragment,R.id.view_content);
     }
+
+    private void removeAllFragment(){
+        remove(homeFragment);
+        remove(historyFragment);
+    }
+    public void setToolbarVisibility(boolean isVisibility){
+        setViewVisibility(toolbar,isVisibility);
+    }
+
+    public void setbottomNavigationVisibility(boolean isVisibility){
+        setViewVisibility(bottomNavigationView,isVisibility);
+    }
+
+    public void setleftNavigationVisibility(boolean isVisibility){
+        setViewVisibility(leftNavigationView,isVisibility);
+    }
+
+    private void setViewVisibility(View v,boolean isVisibility){
+        if(v==null)return;
+        if(isVisibility)v.setVisibility(View.VISIBLE);
+        else v.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode, data);
+        // 识别成功回调，通用文字识别
+        if(resultCode == Activity.RESULT_OK){
+            if (requestCode == ImageCaptureManager.BAIDU_CAMERA_REQUEST_CODE_GENERAL_BASIC) {
+                actionHandler.sendEmptyMessage(ImageCaptureManager.FLAG_TAKE_PICTURE_FINISH);
+                Toast.makeText(MainActivity.this,"图片捕捉完成",Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onActionRequest(Handler actionHandler,int flag, Bundle args) {
+        if(actionHandler==null){
+            Toast.makeText(MainActivity.this,"actionHandler is null.",Toast.LENGTH_LONG).show();
+            return;
+        }
+        this.actionHandler=actionHandler;
+        Message msg=mainHandler.obtainMessage();
+        msg.what=flag;
+        msg.setData(args);
+        mainHandler.sendMessage(msg);
+    }
 }
-
-/*测试部分
- @OnClick(R.id.test_button)void test(){
-
- if(!hasGotToken){
- Toast.makeText(getApplicationContext(),"hasGotToken is "+hasGotToken,Toast.LENGTH_LONG).show();
- return;
- }
- Intent intent = new Intent(MainActivity.this, CameraActivity.class);
- intent.putExtra(CameraActivity.KEY_OUTPUT_FILE_PATH,
- new File(getFilesDir(), "pic.jpg").getAbsolutePath());
- intent.putExtra(CameraActivity.KEY_CONTENT_TYPE,
- CameraActivity.CONTENT_TYPE_GENERAL);
- startActivityForResult(intent, REQUEST_CODE_GENERAL_BASIC);
-
- }
-
- private boolean hasGotToken=false;
- private static final int REQUEST_CODE_GENERAL_BASIC = 106;
- private AlertDialog.Builder alertDialog;
- private final static String TAG ="MainActivity";
- @Override
- protected void onCreate(Bundle savedInstanceState) {
- super.onCreate(savedInstanceState);
- setContentView(R.layout.activity_test);
- ButterKnife.bind(this);
- alertDialog = new AlertDialog.Builder(this);
- initAccessToken();
- //initAccessTokenWithAkSk();
- }
-
- @Override
- protected void onActivityResult(int requestCode, int resultCode, Intent data) {
- super.onActivityResult(requestCode, resultCode, data);
- // 识别成功回调，通用文字识别
- if (requestCode == REQUEST_CODE_GENERAL_BASIC && resultCode == Activity.RESULT_OK) {
- GeneralBasicParams param = new GeneralBasicParams();
- param.setDetectDirection(true);
- param.setImageFile(new F
- ile(getFilesDir(), "pic.jpg"));
- OCR.getInstance().recognizeGeneralBasic(param, new OnResultListener<GeneralResult>() {
- @Override
- public void onResult(GeneralResult result) {
- StringBuilder sb = new StringBuilder();
- for (WordSimple wordSimple : result.getWordList()) {
- WordSimple word = wordSimple;
- sb.append(word.getWords());
- sb.append("\n");
- }
- alertText("识别结果",sb.toString());
- }
-
- @Override
- public void onError(OCRError error) {
- Log.e( TAG,error.getMessage());
- }
- });
- }
- }
-
- @Override
- public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
- @NonNull int[] grantResults) {
- super.onRequestPermissionsResult(requestCode, permissions, grantResults);
- if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
- initAccessToken();
- } else {
- Toast.makeText(getApplicationContext(), "需要android.permission.READ_PHONE_STATE", Toast.LENGTH_LONG).show();
- }
- }
-
- @Override
- protected void onDestroy() {
- super.onDestroy();
- // 释放内存资源
- OCR.getInstance().release();
- }
-
- private void initAccessToken() {
- OCR.getInstance().initAccessToken(new OnResultListener<AccessToken>() {
- @Override
- public void onResult(AccessToken accessToken) {
- String token = accessToken.getAccessToken();
- hasGotToken = true;
- }
-
- @Override
- public void onError(OCRError error) {
- error.printStackTrace();
- alertText("licence方式获取token失败", error.getMessage());
- }
- }, getApplicationContext());
- }
-
- private void initAccessTokenWithAkSk() {
- OCR.getInstance().initAccessTokenWithAkSk(new OnResultListener<AccessToken>() {
- @Override
- public void onResult(AccessToken result) {
- String token = result.getAccessToken();
- hasGotToken = true;
- }
-
- @Override
- public void onError(OCRError error) {
- error.printStackTrace();
- alertText("AK，SK方式获取token失败", error.getMessage());
- }
- }, getApplicationContext(), "TwLkLRGA3bNhIBdL3EQ7hwxR", "lbUWFmDSOFALsz0CiBpedYIuqPLsbBaM");
- }
- private void alertText(final String title, final String message) {
- this.runOnUiThread(new Runnable() {
- @Override
- public void run() {
- alertDialog.setTitle(title)
- .setMessage(message)
- .setPositiveButton("确定", null)
- .show();
- }
- });
- }*/

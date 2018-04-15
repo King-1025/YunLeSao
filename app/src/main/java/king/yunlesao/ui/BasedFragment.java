@@ -7,9 +7,11 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import king.yunlesao.R;
+import butterknife.Unbinder;
+
 
 /**
  * Created by King on 2018/1/3.
@@ -21,7 +23,8 @@ public class BasedFragment extends Fragment {
     private int index;
     private String name;
     private String description;
-    protected Activity attachActivity;
+    protected Activity mActivity;
+    protected Unbinder unbinder;
     private final static String STAT_SAVE_IS_HIDDEN="STAT_SAVE_IS_HIDDEN";
     private final static  String TAG="BasedFragment";
 
@@ -58,29 +61,37 @@ public class BasedFragment extends Fragment {
         }
         return bf;
     }
-    public static BasedFragment show(FragmentManager fr,BasedFragment currentFragment,BasedFragment targetFragment,int resid){
+    public static BasedFragment display(FragmentManager fr,BasedFragment currentFragment,BasedFragment targetFragment,int resid){
         if(fr==null||targetFragment==null)return currentFragment;
-        FragmentTransaction ft=fr.beginTransaction();
+        FragmentTransaction ftr=fr.beginTransaction();
         if(currentFragment!=null) {
             if(currentFragment.equals(targetFragment))return currentFragment;
-            ft.hide(currentFragment);
+            ftr.hide(currentFragment);
             if(targetFragment.isAdded()){
-                if(targetFragment.isHidden())ft.show(targetFragment);
+                if(targetFragment.isHidden())ftr.show(targetFragment);
             }else{
-                ft.add(resid,targetFragment,targetFragment.getName());
+                ftr.add(resid,targetFragment,targetFragment.getName());
             }
         }else{
-            ft.add(resid,targetFragment,targetFragment.getName());
+            ftr.add(resid,targetFragment,targetFragment.getName());
         }
-        ft.commit();
+        ftr.commit();
         return targetFragment;
+    }
+
+    public static void remove(FragmentManager fr,BasedFragment target){
+        if(fr==null||target==null)return;
+        if(!target.isAdded())return;
+        FragmentTransaction ftr=fr.beginTransaction();
+        ftr.remove(target);
+        ftr.commit();
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        attachActivity=(Activity)context;
-        Log.i(TAG,"attachActivity is init");
+        mActivity= (Activity) context;
+        Log.i(TAG," onAttach() is called.");
     }
 
     @Override

@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#66ecca</color>
+    <color name="colorPrimaryDark">#2ddeb1</color>
+    <color name="colorAccent">#25dade</color>
+    <color name="colorViewPagerPoint">#0bca9a</color>
+    <color name="colorWhite">#dbdedd</color>
+    <color name="colorTextBase">#0d0d0d</color>
+    <color name="colorViewPagerBase">#1E000000</color>
+    <color name="colorLinePrimary">#1abf95</color>
+    <color name="colorLineBlack">#6C000000</color>
+    <color name="colorFragmentBase">#d8dcdb</color>
 </resources>

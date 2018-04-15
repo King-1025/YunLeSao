@@ -34,7 +34,7 @@ public class ImagePageAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        Log.i(TAG,"position:"+position);
+       // Log.i(TAG,"position:"+position);
         ImageView iv=list.get(position);
         container.addView(iv);
         return iv;
@@ -42,7 +42,6 @@ public class ImagePageAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        super.destroyItem(container, position, object);
-        container.removeView((View) object);
+        container.removeView((View)object);
     }
 }

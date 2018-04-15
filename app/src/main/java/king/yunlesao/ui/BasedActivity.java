@@ -1,8 +1,6 @@
 package king.yunlesao.ui;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
-import king.yunlesao.R;
 
 /**
  * Created by King on 2018/1/3.
@@ -24,19 +21,20 @@ public class BasedActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private final static String TAG="BasedActivity";
+
     protected FragmentManager fragmentManager;
+    private final static String TAG="BasedActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fragmentManager=getFragmentManager();
-        Log.i(TAG,"onCreate() is OK!");
+        Log.i(TAG,"onCreate() is called!");
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Log.i(TAG,"onNavigationItemSelected() is OK!");
+        Log.i(TAG,"onNavigationItemSelected() is called.");
         return false;
     }
 
@@ -44,11 +42,14 @@ public class BasedActivity extends AppCompatActivity implements
     protected void setToolBarNoTitle(Toolbar toolbar){
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
-        Log.i(TAG,"setToolBarTitle() is OK!");
+        Log.i(TAG,"setToolBarTitle() is called.");
     }
 
    protected BasedFragment show(BasedFragment currentFragment,BasedFragment targetFragment,int resid){
-        return BasedFragment.show(fragmentManager,currentFragment,targetFragment,resid);
+        return BasedFragment.display(fragmentManager,currentFragment,targetFragment,resid);
    }
 
+   protected void remove(BasedFragment target){
+        BasedFragment.remove(fragmentManager,target);
+   }
 }

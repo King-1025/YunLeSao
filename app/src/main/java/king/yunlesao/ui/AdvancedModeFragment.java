@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import butterknife.BindView;
 import king.yunlesao.R;
 
 /**
@@ -14,10 +15,16 @@ import king.yunlesao.R;
  */
 
 public class AdvancedModeFragment extends AbilityFragment {
+
+    private boolean isNormal;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        isNormal=true;
         return inflater.inflate(R.layout.advanced_mode_fragment,container,false);
     }
 
+    public boolean isNormal() {
+        return isNormal;
+    }
 }

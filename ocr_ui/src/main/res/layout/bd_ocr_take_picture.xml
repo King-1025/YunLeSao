@@ -48,7 +48,6 @@
             android:layout_marginEnd="@dimen/camera_right_margin"
             android:layout_marginTop="@dimen/camera_top_margin"
             android:paddingBottom="3dp"
-            android:src="@drawable/bd_ocr_light_off"
-            />
+            android:src="@drawable/bd_ocr_light_off"/>
 
 </com.baidu.ocr.ui.camera.OCRCameraLayout>

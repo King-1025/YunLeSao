@@ -1,54 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <android.support.v4.view.ViewPager
-        android:id="@+id/view_pager"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:background="#FF0000">
-    </android.support.v4.view.ViewPager>
-    <LinearLayout
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:id="@+id/top_viewpager_layout">
+        <android.support.v4.view.ViewPager
+             android:id="@+id/view_pager"
+             android:layout_width="match_parent"
+             android:layout_height="@dimen/view_pager_height">
+        </android.support.v4.view.ViewPager>
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/view_pager"
             android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:background="#000000">
+            android:orientation="vertical">
             <TextView
                 android:id="@+id/description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:textColor="#FF0000"
-                android:textSize="18sp"
-                android:text="123321"/>
+                android:padding="5dp"
+                android:textColor="@color/colorTextBase"
+                android:textSize="15sp"/>
             <LinearLayout
                 android:id="@+id/show_pointer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
+                android:minHeight="30dp"
+                android:gravity="center"
+                android:background="@color/colorViewPagerBase"
                 android:orientation="horizontal">
             </LinearLayout>
-    </LinearLayout>
-    <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_below="@id/view_pager"
-        android:layout_height="5dp"
-        android:background="#000FF0">
-    </View>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@color/colorLinePrimary"/>
+        </LinearLayout>
+    </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/view">
+        android:layout_height="match_parent">
         <FrameLayout
             android:id="@+id/ability_frame_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#00Ff00">
+            android:layout_height="match_parent">
         </FrameLayout>
     </LinearLayout>
-</RelativeLayout>
+</FrameLayout>

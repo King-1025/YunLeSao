@@ -7,43 +7,43 @@
         <item
             android:id="@+id/nav_camera"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:title="主题"/>
         <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:title="精确度" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:title="翻译方式" />
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:title="更多设置" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="@string/mode">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
+                android:id="@+id/auto_mode"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:title="@string/auto_mode"
+                android:checkable="true"/>
+            <item
+                android:id="@+id/advanced_mode"
+                android:icon="@drawable/ic_menu_send"
+                android:title="@string/advanced_mode"
+                android:checkable="true"/>
         </menu>
     </item>
-    <item android:title="test">
+    <item android:title="@string/others">
         <menu>
             <item
-                android:id="@+id/test_nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:id="@+id/help"
+                android:title="@string/help"/>
             <item
-                android:id="@+id/test_nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:id="@+id/about"
+                android:title="@string/about"/>
         </menu>
     </item>
 </menu>

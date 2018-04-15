@@ -1,19 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/result_panel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible">
+        <LinearLayout
+            android:id="@+id/top_image_layout"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:gravity="center"
+            android:background="@color/colorViewPagerBase"
+            android:padding="5dp">
+            <ImageView
+                android:id="@+id/scanf_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <View
+            android:id="@+id/top_line"
+            android:layout_below="@+id/top_image_layout"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorFragmentBase"/>
+        <RelativeLayout
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_below="@+id/top_line"
+            android:id="@+id/control"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:gravity="center_horizontal">
+            <Button
+                android:id="@+id/back_to"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:textColor="@color/colorWhite"
+                android:background="@drawable/back_to_button_seletor"
+                android:text="返回" />
+            <Button
+                android:id="@+id/go_on"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/colorWhite"
+                android:background="@drawable/back_to_button_seletor"
+                android:text="继续" />
+            <TextView
+                android:layout_toRightOf="@id/back_to"
+                android:layout_toLeftOf="@id/go_on"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:textSize="15sp"
+                android:id="@+id/status"
+                android:textColor="#000000"/>
+        </RelativeLayout>
+        <View
+            android:id="@+id/bottom_line"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@id/control"
+            android:background="@color/colorFragmentBase"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="4dp"/>
+        <LinearLayout
+            android:layout_below="@id/bottom_line"
+            android:orientation="vertical"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimaryDark"
+                    android:textSize="15sp"
+                    android:textColor="@color/colorWhite"
+                    android:gravity="center"
+                    android:text="识别结果" />
+                <ScrollView
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/scanf_scollview"
+                    android:background="@color/colorFragmentBase">
+                    <TextView
+                        android:id="@+id/scanf_result"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textSize="15sp"
+                        android:padding="2dp"
+                        android:textColor="#000"/>
+                </ScrollView>
+            </LinearLayout>
+           <LinearLayout
+               android:layout_marginTop="2dp"
+               android:layout_marginBottom="2dp"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:orientation="vertical"
+               android:layout_weight="1">
+               <TextView
+                   android:layout_marginLeft="4dp"
+                   android:layout_marginRight="4dp"
+                   android:background="@color/colorPrimaryDark"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:textSize="15sp"
+                   android:text="翻译结果"
+                   android:gravity="center"
+                   android:textColor="#FFFFFF"/>
+               <ScrollView
+                   android:layout_marginLeft="4dp"
+                   android:layout_marginRight="4dp"
+                   android:id="@+id/translate_scrollview"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:background="@color/colorViewPagerBase">
+                   <TextView
+                       android:id="@+id/translate_result"
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:padding="2dp"
+                       android:textSize="15sp"
+                       android:textColor="#000"/>
+               </ScrollView>
+           </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
 
-    <TextView
-        android:id="@+id/textView2"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/view_pager_height"
+        android:layout_marginBottom="@dimen/bottom_navigation_height"
+        android:gravity="center">
+        <Button
+            android:id="@+id/auto_scanf_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="扫"
+            android:minWidth="100dp"
+            android:minHeight="100dp"
+            android:textSize="25sp"
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/auto_scanf_button_seletor"/>
+    </LinearLayout>
+
+    <!--king.yunlesao.ui.view.AutoScanfButton
+        android:id="@+id/auto_scanf_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="自动模式"
-        android:textSize="25sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
-</android.support.constraint.ConstraintLayout>
+        app:layout_constraintRight_toRightOf="parent"/-->
+</FrameLayout>
