@@ -81,7 +81,7 @@
             android:layout_height="match_parent">
             <LinearLayout
                 android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
+                android:layout_marginBottom="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -108,13 +108,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:textSize="15sp"
-                        android:padding="2dp"
+                        android:padding="5dp"
                         android:textColor="#000"/>
                 </ScrollView>
             </LinearLayout>
            <LinearLayout
                android:layout_marginTop="2dp"
-               android:layout_marginBottom="2dp"
+               android:layout_marginBottom="5dp"
                android:layout_width="match_parent"
                android:layout_height="match_parent"
                android:orientation="vertical"
@@ -140,7 +140,7 @@
                        android:id="@+id/translate_result"
                        android:layout_width="match_parent"
                        android:layout_height="match_parent"
-                       android:padding="2dp"
+                       android:padding="5dp"
                        android:textSize="15sp"
                        android:textColor="#000"/>
                </ScrollView>

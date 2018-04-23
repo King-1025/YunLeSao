@@ -60,6 +60,7 @@ public class MainActivity extends BasedActivity implements MainActionListener{
 
     //模式转换回调接口
     private ModeSwitcher modeSwitcher;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,23 +130,6 @@ public class MainActivity extends BasedActivity implements MainActionListener{
         return true;
     }
 
-    private void initHandler(){
-        mainHandler=new Handler(this.getMainLooper()){
-            @Override
-            public void handleMessage(Message msg) {
-                switch (msg.what){
-                    case ImageCaptureManager.BAIDU_CAMERA_REQUEST_CODE_GENERAL_BASIC:
-                        String imagePath=msg.getData().getString(ImageCaptureManager.IMAGE_SAVE_PATH);
-                        Log.i(TAG,"imagePath:"+imagePath);
-                        //Toast.makeText(MainActivity.this,"imagePath:"+imagePath,Toast.LENGTH_LONG).show();
-                        boolean is=ImageCaptureManager.takePictureByBaiduCamera(MainActivity.this,imagePath);
-                        if(!is)actionHandler.sendEmptyMessage(ImageCaptureManager.FLAG_TAKE_PICTURE_ERROR);
-                        break;
-                }
-            }
-        };
-    }
-
     private void initLeftNavigation(){
         //侧边栏初始化
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -187,15 +171,45 @@ public class MainActivity extends BasedActivity implements MainActionListener{
         else v.setVisibility(View.INVISIBLE);
     }
 
+    private void initHandler(){
+        mainHandler=new Handler(this.getMainLooper()){
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what){
+                    case ImageCaptureManager.BAIDU_CAMERA:
+
+                         //test(msg.arg1);
+
+                        String imagePath=msg.getData().getString(ImageCaptureManager.IMAGE_SAVE_PATH);
+                        Log.i(TAG,"imagePath:"+imagePath);
+                        //Toast.makeText(MainActivity.this,"imagePath:"+imagePath,Toast.LENGTH_LONG).show();
+                        if(!ImageCaptureManager.
+                                takePictureByBaiduCamera(MainActivity.this,imagePath,msg.arg1)){
+                            actionHandler.sendEmptyMessage(ImageCaptureManager.FLAG_TAKE_PICTURE_ERROR);
+                        }
+                        break;
+                }
+            }
+        };
+    }
+
+    private void test(int flag){
+        Message msg=actionHandler.obtainMessage();
+        msg.what=ImageCaptureManager.FLAG_TAKE_PICTURE_FINISH;
+        msg.arg1=flag;
+        actionHandler.sendMessage(msg);
+        Toast.makeText(MainActivity.this,"图片捕捉完成",Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode,resultCode, data);
-        // 识别成功回调，通用文字识别
         if(resultCode == Activity.RESULT_OK){
-            if (requestCode == ImageCaptureManager.BAIDU_CAMERA_REQUEST_CODE_GENERAL_BASIC) {
-                actionHandler.sendEmptyMessage(ImageCaptureManager.FLAG_TAKE_PICTURE_FINISH);
+                Message msg=actionHandler.obtainMessage();
+                msg.what=ImageCaptureManager.FLAG_TAKE_PICTURE_FINISH;
+                msg.arg1=requestCode;
+                actionHandler.sendMessage(msg);
                 Toast.makeText(MainActivity.this,"图片捕捉完成",Toast.LENGTH_SHORT).show();
-            }
         }
     }
 
@@ -207,7 +221,8 @@ public class MainActivity extends BasedActivity implements MainActionListener{
         }
         this.actionHandler=actionHandler;
         Message msg=mainHandler.obtainMessage();
-        msg.what=flag;
+        msg.what=ImageCaptureManager.BAIDU_CAMERA;
+        msg.arg1=flag;
         msg.setData(args);
         mainHandler.sendMessage(msg);
     }

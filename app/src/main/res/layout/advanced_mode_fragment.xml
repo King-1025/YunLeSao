@@ -2,90 +2,146 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <GridLayout
+    android:layout_height="match_parent"
+    android:id="@+id/advanced_container">
+
+    <LinearLayout
+        android:id="@+id/advanced_based_panel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/view_pager_height"
         android:layout_marginBottom="@dimen/bottom_navigation_height"
-        android:columnCount="2"
-        android:rowCount="2">
-        <RelativeLayout
-            android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/view_pager_height"
+        android:background="@color/colorViewPagerBase"
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:padding="1dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center">
+                <Button
+                    android:id="@+id/based_scanf_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/auto_scanf_button_seletor"
+                    android:minHeight="100dp"
+                    android:minWidth="100dp"
+                    android:text="扫描"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="25sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/based_recognition_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/auto_scanf_button_seletor"
+                    android:minHeight="100dp"
+                    android:minWidth="100dp"
+                    android:text="识别"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="25sp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/based_translate_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/auto_scanf_button_seletor"
+                    android:minHeight="100dp"
+                    android:minWidth="100dp"
+                    android:text="翻译"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="25sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/based_word_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/auto_scanf_button_seletor"
+                    android:minHeight="100dp"
+                    android:minWidth="100dp"
+                    android:text="词库"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="25sp" />
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/advanced_content_panel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/bottom_navigation_height">
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/advanced_control_panel"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_navigation_height"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom"
+        android:background="@color/colorPrimary"
+        android:gravity="bottom"
+        android:paddingBottom="10dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
+        <Button
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/advanced_button_seletor"
+            android:id="@+id/advanced_back_button"
+            android:layout_width="@dimen/bottom_control_button_width"
             android:layout_height="wrap_content"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_row="0"
-            android:layout_column="0"
-            android:gravity="center">
-            <Button
-                android:id="@+id/advanced_scanf_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="扫描"
-                android:minWidth="100dp"
-                android:minHeight="100dp"
-                android:textSize="25sp"
-                android:textColor="@color/colorWhite"
-                android:background="@drawable/auto_scanf_button_seletor"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="wrap_content"
+            android:text="返回"/>
+        <Button
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/advanced_button_seletor"
+            android:id="@+id/advanced_ability_button"
+            android:layout_centerHorizontal="true"
+            android:layout_width="@dimen/bottom_control_button_width"
             android:layout_height="wrap_content"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_row="0"
-            android:layout_column="1"
-            android:gravity="center">
-            <Button
-                android:id="@+id/advanced_recognition_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="识别"
-                android:minWidth="100dp"
-                android:minHeight="100dp"
-                android:textSize="25sp"
-                android:textColor="@color/colorWhite"
-                android:background="@drawable/auto_scanf_button_seletor"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="wrap_content"
+            android:text="功能按钮"/>
+        <Button
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/advanced_button_seletor"
+            android:id="@+id/advanced_next_button"
+            android:layout_width="@dimen/bottom_control_button_width"
             android:layout_height="wrap_content"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_row="1"
-            android:layout_column="0"
-            android:gravity="center">
-            <Button
-                android:id="@+id/advanced_translate_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="翻译"
-                android:minWidth="100dp"
-                android:minHeight="100dp"
-                android:textSize="25sp"
-                android:textColor="@color/colorWhite"
-                android:background="@drawable/auto_scanf_button_seletor"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_row="1"
-            android:layout_column="1"
-            android:gravity="center">
-            <Button
-                android:id="@+id/advanced_word_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="词库"
-                android:minWidth="100dp"
-                android:minHeight="100dp"
-                android:textSize="25sp"
-                android:textColor="@color/colorWhite"
-                android:background="@drawable/auto_scanf_button_seletor"/>
-        </RelativeLayout>
-    </GridLayout>
+            android:layout_alignParentRight="true"
+            android:text="下一步"/>
+    </RelativeLayout>
+
 </FrameLayout>

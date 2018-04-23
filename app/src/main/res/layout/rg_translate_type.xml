@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp">
+    <RadioGroup
+        android:id="@+id/translate_group_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/auto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="自动" />
+    <android.support.v7.widget.AppCompatRadioButton
+        android:id="@+id/zh_to_en"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="中文->英文" />
+
+    <android.support.v7.widget.AppCompatRadioButton
+        android:id="@+id/en_to_zh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="英文->中文" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/zh_to_jp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="中文->日文" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/jp_to_zh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="日文->中文" />
+    </RadioGroup>
+</LinearLayout>

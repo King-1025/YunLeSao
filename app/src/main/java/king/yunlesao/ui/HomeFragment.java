@@ -50,8 +50,8 @@ public class HomeFragment extends BasedFragment implements
     private final static String TAG="HomeFragment";
 
     private ImagePageAdapter imagePageAdapter;
-    private int imageId[]={R.mipmap.ic_launcher,R.mipmap.ic_launcher};
-    private String text[]={"image_0","image_1","image_2","image_3"};
+    private int imageId[]={R.drawable.image_1,R.drawable.image_2,R.drawable.image_3};
+    private String text[]={"image_1","image_2","image_3"};
     private int currentPosition;
     private int oldChildId;
     private int size;
@@ -85,27 +85,6 @@ public class HomeFragment extends BasedFragment implements
                     BasedFragment.makeFragment(BasedFragment.AUTO_MODE_FRAGMENT,0,"自动","自动模式");
             advancedModeFragment= (AdvancedModeFragment)
                     BasedFragment.makeFragment(BasedFragment.ADVANCED_MODE_FRAGMENT,0,"高级","高级模式");
-            fm=getChildFragmentManager();
-            mActivity=getActivity();
-            autoModeFragment.setViewChanger(this);
-            Log.i(TAG,"attachActivity:"+mActivity);
-            mh=new Handler(mActivity.getMainLooper()){
-                @Override
-                public void handleMessage(Message msg) {
-                    switch (msg.what){
-                        case AUTO_SHOW:
-                            if(isAutoShow){
-                                autoScrollViewPager(false);//向右自动滑动
-                                changeViewPagerState();
-                                mh.sendEmptyMessageDelayed(AUTO_SHOW,changeTime);
-                            }else{
-                                mh.removeMessages(AUTO_SHOW);
-                            }
-                            break;
-                    }
-                }
-            };
-
         }
         Log.i(TAG,"onCreate() is called.");
     }
@@ -117,23 +96,8 @@ public class HomeFragment extends BasedFragment implements
         View view=inflater.inflate(R.layout.home_fragment,container,false);
         unbinder=ButterKnife.bind(this,view);
         mActivity=getActivity();
-        //初始化size，选取最小长度。
-        if(imageId.length<text.length){
-            size=imageId.length;
-        }else {
-            size=text.length;
-        }
-        //初始化最开始的视图位置
-        currentPosition=1;
-        imagePageAdapter=new ImagePageAdapter(
-                getImageList(mActivity,imageId,size));//初始化视图列表
-        viewPager.setAdapter(imagePageAdapter);
-        viewPager.addOnPageChangeListener(this);
-        viewPager.setCurrentItem(currentPosition,false);
-        createPoints(mActivity,pointer,R.drawable.point_selector,size);
-        description.setText(text[currentPosition-1]);
-        pointer.getChildAt(currentPosition-1).setEnabled(false);
-        oldChildId=currentPosition-1;
+        fm=getChildFragmentManager();
+        initViewPager();
         initAbilityPanel();
         //注意：必须初始化为false，强制第一次更新，防止添加Fragment导致界面重绘，状态丢失。
         isNormal=false;
@@ -165,9 +129,60 @@ public class HomeFragment extends BasedFragment implements
         removeAllFragment();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void initViewPager(){
+        //初始化size，选取最小长度。
+        if(imageId.length<text.length){
+            size=imageId.length;
+        }else {
+            size=text.length;
+        }
+        //ViewPager适配器
+        imagePageAdapter=new ImagePageAdapter(
+                getImageList(mActivity,imageId,size));//初始化视图列表
+        viewPager.setAdapter(imagePageAdapter);//设置适配器
+        viewPager.addOnPageChangeListener(this);
+
+        //初始化指示器
+        createPoints(mActivity,pointer,R.drawable.point_selector,size);
+
+        //初始化最开始的视图位置
+        if(size>1){
+            currentPosition=1;
+            oldChildId=currentPosition-1;
+            viewPager.setCurrentItem(currentPosition,false);
+        }
+
+        //设置图片描述
+        description.setText(text[0]);
+        //设置指示位置
+        pointer.getChildAt(0).setEnabled(false);
+
+        mh=new Handler(mActivity.getMainLooper()){
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what){
+                    case AUTO_SHOW:
+                        if(isAutoShow){
+                            scrollViewPager(false);//向右自动滑动
+                        }else {
+                            mh.removeMessages(AUTO_SHOW);
+                        }
+                        break;
+                }
+            }
+        };
+    }
+
     private void initAbilityPanel(){
+        AbilityFragment.setViewChanger(this);
+
+        show(advancedModeFragment);
+        currentMode=MODE_CHANGE_ADVANCED;
+
         show(autoModeFragment);
         currentMode=MODE_CHANGE_AUTO;
+
     }
 
     private void show(AbilityFragment target){
@@ -178,32 +193,42 @@ public class HomeFragment extends BasedFragment implements
         remove(fm,advancedModeFragment);
     }
     private ArrayList<ImageView> getImageList(Activity activity,int resid[],int length){
-        if (activity==null||resid==null)return null;
+        if (activity==null||resid==null||length<=0)return null;
         if(length>resid.length){
-            Log.i(TAG,"size is error. "+length);
+            Log.e(TAG,"error! size:"+length+" > "+"resid.length:"+resid.length);
             return null;
         }
         ArrayList<ImageView>list=new ArrayList<>();
-
-        for(int i=0;i<length;i++){
-            ImageView iv=new ImageView(activity);
-            iv.setBackgroundResource(resid[i]);
+        ImageView iv;
+        if(length==1){
+            iv=new ImageView(activity);
+            iv.setBackgroundResource(resid[0]);
+            list.add(iv);
+        }else{
+            //起始位置对应最后一个视图
+            iv=new ImageView(activity);
+            iv.setBackgroundResource(resid[length-1]);
+            list.add(iv);
+            //中间位置依次对应
+            for(int i=1;i<=length;i++){
+                iv=new ImageView(activity);
+                iv.setBackgroundResource(resid[i-1]);
+                list.add(iv);
+            }
+            //末尾位置对应第一个视图
+            iv=new ImageView(activity);
+            iv.setBackgroundResource(resid[0]);
             list.add(iv);
         }
-        if(length>1){
-            ImageView start=new ImageView(getActivity());
-            ImageView end=new ImageView(getActivity());
-            start.setBackgroundResource(resid[length-1]);
-            end.setBackgroundResource(resid[0]);
-            list.add(0,start);
-            list.add(end);
-        }
+        //eg: size=3
+        //index: 0 1 2 3 4
+        //view:  3 1 2 3 1
         return list;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void createPoints(Activity activity, ViewGroup container, int resid, int number){
-        if(activity==null||container==null)return;
+        if(activity==null||container==null||number<=0)return;
         LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(20,20);
         for(int i=0;i<number;i++){
             View iv=new View(activity);
@@ -215,14 +240,15 @@ public class HomeFragment extends BasedFragment implements
     }
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-      //  Log.i(TAG,"onPageScrolled()->position:"+position);
+      //Log.i(TAG,"onPageScrolled()->position:"+position);
     }
 
     @Override
     public void onPageSelected(int position) {
        // Log.i(TAG,"onPageSelected()->position:"+position);
         currentPosition=position;
-        if(isAutoShow){ //如果，正在自动滑动,停下来等待.
+        //如果，正在自动滑动,停下来等待.
+        if(isAutoShow){
             stopAutoShow();
             startAutoShow(waitTime);
         }
@@ -235,13 +261,13 @@ public class HomeFragment extends BasedFragment implements
     }
 
     private void changeViewPagerState(){
-        if(currentPosition==0){ //最左边
+        if(currentPosition<=0){ //最左边
             viewPager.setCurrentItem(size,true);
             description.setText(text[size-1]);
             pointer.getChildAt(size-1).setEnabled(false);
             pointer.getChildAt(oldChildId).setEnabled(true);
             oldChildId=size-1;//更新Id
-        }else if(currentPosition==size+1){ //最右边
+        }else if(currentPosition>=size+1){ //最右边
             viewPager.setCurrentItem(1,true);
             description.setText(text[0]);
             pointer.getChildAt(0).setEnabled(false);
@@ -270,18 +296,22 @@ public class HomeFragment extends BasedFragment implements
         isAutoShow=false;
         mh.removeMessages(AUTO_SHOW);
     }
-    private void autoScrollViewPager(boolean isToleft){
-        if(currentPosition<0||currentPosition>(size+1)){
-            currentPosition=0;//超出范围，重置位置。
-        }else {
-            if(isToleft){
-                currentPosition -= 1;//向左
-            }else{
-                currentPosition += 1;//向右
-            }
+    private void scrollViewPager(boolean isToleft){
+        if(isToleft){
+            currentPosition -= 1;//向左
+        }else{
+            currentPosition += 1;//向右
         }
-        if(isAutoShow)
-        viewPager.setCurrentItem(currentPosition,true);//平滑改变视图
+        if(currentPosition<0){
+            currentPosition=size+1;
+        }else if(currentPosition>size+1){
+            currentPosition=0;
+        }
+        if(isAutoShow){
+            viewPager.setCurrentItem(currentPosition,true);
+            changeViewPagerState();
+            mh.sendEmptyMessageDelayed(AUTO_SHOW,changeTime);
+        }
     }
 
     private void isOnlyShowHomeFragment(boolean is){
@@ -296,14 +326,14 @@ public class HomeFragment extends BasedFragment implements
     public void changeViewVisibility(int flag,Object args) {
             switch (flag){
                 case FLAG_NOEMAL:
-                    //if(isNormal)return;
+                   // if(isNormal)return;
                     isOnlyShowHomeFragment(false);
                     top_viewpager.setVisibility(View.VISIBLE);
                     startAutoShow(1000);
                     isNormal=true;
                     break;
                 case FLAG_ONLY_SHOW_HOME_FRAGMENT:
-                    //if(!isNormal)return;
+                   // if(!isNormal)return;
                     stopAutoShow();
                     isOnlyShowHomeFragment(true);
                     top_viewpager.setVisibility(View.INVISIBLE);
@@ -321,11 +351,13 @@ public class HomeFragment extends BasedFragment implements
                 show(autoModeFragment);
                 currentMode=MODE_CHANGE_AUTO;
                 needNormalState=autoModeFragment.isNormal();
+                AbilityFragment.setManagerForFragment(autoModeFragment);
                 break;
             case MODE_CHANGE_ADVANCED:
                 show(advancedModeFragment);
                 currentMode=MODE_CHANGE_ADVANCED;
                 needNormalState=advancedModeFragment.isNormal();
+                AbilityFragment.setManagerForFragment(advancedModeFragment);
                 break;
         }
         if(needNormalState){
