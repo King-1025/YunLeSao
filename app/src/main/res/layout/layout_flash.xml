@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/flash_center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_above="@id/flash_bottom"
+        android:layout_marginBottom="80dp">
+        <ImageView
+            android:layout_width="@dimen/flash_imageView_size"
+            android:layout_height="@dimen/flash_imageView_size"
+            android:src="@mipmap/ic_launcher"
+            android:layout_marginBottom="5dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textSize="@dimen/default_text_size"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/flash_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/flash_bottom_info_height"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:gravity="center">
+        <TextView
+            android:text="dkfdkf"
+            android:id="@+id/flash_bottom_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</RelativeLayout>

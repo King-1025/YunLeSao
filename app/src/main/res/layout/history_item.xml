@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/history_item_height"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+        <TextView
+            android:id="@+id/history_wordbar_number"
+            android:text="1"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:minWidth="30dp"
+            android:textSize="@dimen/history_item_text_size"
+            android:layout_alignParentRight="true"/>
+        <TextView
+            android:text="dkjdkf"
+            android:id="@+id/history_time"
+            android:layout_toLeftOf="@+id/history_wordbar_number"
+            android:textSize="@dimen/history_item_text_size"
+            android:layout_width="match_parent"
+            android:ellipsize="middle"
+            android:gravity="center_vertical"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorViewPagerBase"/>
+</LinearLayout>
