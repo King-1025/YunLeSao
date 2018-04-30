@@ -10,4 +10,6 @@
     <color name="colorLinePrimary">#1abf95</color>
     <color name="colorLineBlack">#6C000000</color>
     <color name="colorFragmentBase">#d8dcdb</color>
+    <color name="colorItemBackgroundNormal">#e9edec</color>
+    <color name="colorItemBackgroundSelect">#32e1be</color>
 </resources>

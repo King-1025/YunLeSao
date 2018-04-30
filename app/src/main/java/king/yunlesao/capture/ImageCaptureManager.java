@@ -21,8 +21,9 @@ public class ImageCaptureManager {
     private Context context;
     private String imagePath;
     private final static String TAG="ImageCaptureManager";
-    private final static String IMAGE_NAME="pic.jpg";
-
+    private final static String DEFAULT_IMAGE_NAME="temp";
+    private final static String DEFAULT_IMAGE_SUFFIX=".jpg";
+    private final static String REGEX_INVAILD_IMAGE_SUFFIX="\\.(jpg|jpeg|png)$";
     public final static String IMAGE_SAVE_PATH="image_save_path";
 
     public static final int BAIDU_CAMERA=0xc0;
@@ -44,7 +45,7 @@ public class ImageCaptureManager {
     public final static int FLAG_TAKE_PICTURE_ERROR=0xA1;
     public ImageCaptureManager(Context ctx){
         context=ctx;
-        imagePath=context.getFilesDir()+"/"+IMAGE_NAME;
+        imagePath=context.getFilesDir()+"/"+DEFAULT_IMAGE_NAME+DEFAULT_IMAGE_SUFFIX;
         Log.i(TAG,"imagePath:"+imagePath);
     }
 
@@ -90,13 +91,19 @@ public class ImageCaptureManager {
         }
         return true;
     }
-
     public static boolean checkImagePath(String path){
+        return checkPath(path,REGEX_INVAILD_IMAGE_SUFFIX);
+    }
+    public static boolean checkPath(String path,String regex){
         boolean isValid=false;
         if(path!=null){
-            File imageFile=new File(path);
-            if(imageFile.exists()){
-                isValid=true;
+            if(path.endsWith("png")||path.endsWith("jpg")||path.endsWith("jpeg")){
+                File file=new File(path);
+                if(file!=null){
+                    if(file.exists()&&file.isFile()){
+                        isValid=true;
+                    }
+                }
             }
         }
         return isValid;

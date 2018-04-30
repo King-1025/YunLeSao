@@ -25,6 +25,7 @@ import king.yunlesao.translate.TranslateManager;
 import king.yunlesao.ui.iface.MainActionListener;
 import king.yunlesao.ui.iface.RecognitionEventNotify;
 import king.yunlesao.ui.iface.TranslateEventNotify;
+import king.yunlesao.utils.SettingManager;
 import king.yunlesao.utils.Tools;
 
 /**
@@ -33,7 +34,7 @@ import king.yunlesao.utils.Tools;
  */
 
 public class AutoModeFragment extends AbilityFragment implements
-        View.OnClickListener,View.OnLongClickListener{
+        View.OnClickListener{
     @BindView(R.id.auto_scanf_button)Button scanf;
     @BindView(R.id.back_to)Button backTo;
     @BindView(R.id.go_on)Button goOn;
@@ -44,7 +45,7 @@ public class AutoModeFragment extends AbilityFragment implements
     @BindView(R.id.scanf_image)ImageView scanfImage;
 
     private final static String TAG="AutoModeFragment";
-    private Bundle translateType;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -53,11 +54,10 @@ public class AutoModeFragment extends AbilityFragment implements
         scanf.setOnClickListener(this);
         goOn.setOnClickListener(this);
         backTo.setOnClickListener(this);
-        scanfResult.setOnLongClickListener(this);
-        translateResult.setOnLongClickListener(this);
+        scanfResult.setOnClickListener(this);
+        translateResult.setOnClickListener(this);
         setNormal(true);
         initActionHandler();
-        translateType=getDefaultTranslateType();
         return view;
     }
 
@@ -84,11 +84,19 @@ public class AutoModeFragment extends AbilityFragment implements
         switch (v.getId()){
             case R.id.auto_scanf_button:
             case R.id.go_on:
-                scanf(ImageCaptureManager.REQUEST_CODE_GENERAL_BASIC);
+                scanf(getDefaultScanfType());
                 break;
             case R.id.back_to:
                 hideResultPanel();
                 changeHomeFragmentState(HomeFragment.FLAG_NOEMAL);
+                break;
+            case R.id.scanf_result:
+                Tools.copyToClipboard(mActivity.getApplicationContext(),((TextView)v).getText().toString());
+                Toast.makeText(mActivity,"识别结果已复制",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.translate_result:
+                Tools.copyToClipboard(mActivity.getApplicationContext(),((TextView)v).getText().toString());
+                Toast.makeText(mActivity,"翻译结果已复制",Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -146,9 +154,10 @@ public class AutoModeFragment extends AbilityFragment implements
         status.setText("正在翻译中...");
         scanfResult.setText(result);
         Log.i(TAG,"handleRecognitionResult() is called.");
+        Bundle type=TranslateManager.getTranslateType(getDefaultTranslateType());
         getTranslateManager().translateByBaidu(result,
-                TranslateManager.getSourceLanguage(translateType),
-                TranslateManager.getDestinationLanguage(translateType));
+                TranslateManager.getSourceLanguage(type),
+                TranslateManager.getDestinationLanguage(type));
     }
 
     //处理识别错误
@@ -194,19 +203,4 @@ public class AutoModeFragment extends AbilityFragment implements
         Log.i(TAG,"翻译错误:"+error);
     }
 
-    @Override
-    public boolean onLongClick(View v) {
-        String text=((TextView)v).getText().toString();
-        switch (v.getId()){
-            case R.id.scanf_result:
-                Tools.copyToClipboard(mActivity.getApplicationContext(),text);
-                Toast.makeText(mActivity,"识别结果已复制",Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.translate_result:
-                Tools.copyToClipboard(mActivity.getApplicationContext(),text);
-                Toast.makeText(mActivity,"翻译结果已复制",Toast.LENGTH_SHORT).show();
-                break;
-        }
-        return false;
-    }
 }

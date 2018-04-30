@@ -79,8 +79,14 @@ public class TranslateManager {
         }
     }
 
-    public static Bundle getTranslateType(int flag){
+    public static Bundle getTranslateType(String src,String dst,String description){
         Bundle bundle=new Bundle();
+        bundle.putString(KEY_SOURCE_LANGUAGE,src);
+        bundle.putString(KEY_DESTINATION_LANGUAGE,dst);
+        bundle.putString(KEY_DESCRIPTION,description);
+        return bundle;
+    }
+    public static Bundle getTranslateType(int flag){
         String src="auto";
         String dst="auto";
         String description="自动";
@@ -105,10 +111,7 @@ public class TranslateManager {
             default:Log.i(TAG,"没有此翻译类型,将选择自动类型。flag:"+flag);
                 break;
         }
-        bundle.putString(KEY_SOURCE_LANGUAGE,src);
-        bundle.putString(KEY_DESTINATION_LANGUAGE,dst);
-        bundle.putString(KEY_DESCRIPTION,description);
-        return bundle;
+        return getTranslateType(src,dst,description);
     }
 
     public static String getSourceLanguage(Bundle type){

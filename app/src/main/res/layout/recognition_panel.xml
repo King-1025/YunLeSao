@@ -8,7 +8,7 @@
         android:id="@+id/image_panel"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_pager_height"
-        android:padding="2dp">
+        android:padding="5dp">
         <ImageView
             android:id="@+id/recgnition_scanf_image"
             android:layout_width="match_parent"
@@ -25,10 +25,11 @@
         android:layout_below="@id/line"
         android:layout_width="match_parent"
         android:layout_height="@dimen/center_lable_height"
-        android:padding="5dp"
-        android:gravity="center_vertical">
+        android:padding="0dp"
+        android:gravity="center">
         <TextView
             android:id="@+id/label"
+            android:layout_marginLeft="5dp"
             android:text="识别类型："
             android:textSize="15sp"
             android:gravity="center"
@@ -45,7 +46,9 @@
             android:layout_alignParentRight="true"
             android:id="@+id/recgnition_change_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_height="@dimen/center_lable_button_height"
             android:textColor="@color/colorWhite"
             android:background="@drawable/advanced_button_seletor"
             android:text="更改"/>
@@ -56,6 +59,7 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/bottom_navigation_height">
         <ScrollView
+             android:id="@+id/sv_recgnition_panel"
              android:layout_marginLeft="4dp"
              android:layout_marginRight="4dp"
              android:layout_width="match_parent"
@@ -67,7 +71,7 @@
             android:layout_height="match_parent"
             android:padding="5dp"
             android:textSize="15sp"
-            android:textColor="#000"/>
+            android:textColor="@color/colorTextBase"/>
        </ScrollView>
     </LinearLayout>
 </RelativeLayout>

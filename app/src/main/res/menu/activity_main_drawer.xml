@@ -5,19 +5,24 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_theme"
             android:icon="@drawable/ic_menu_camera"
             android:title="主题"/>
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_recognition_type"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="精确度" />
+            android:title="精确度">
+        </item>
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_translate_type"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="翻译方式" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_clean_history"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="清空历史" />
+        <item
+            android:id="@+id/nav_more_setting"
             android:icon="@drawable/ic_menu_manage"
             android:title="更多设置" />
     </group>
@@ -25,12 +30,12 @@
     <item android:title="@string/mode">
         <menu>
             <item
-                android:id="@+id/auto_mode"
+                android:id="@+id/nav_auto_mode"
                 android:icon="@drawable/ic_menu_send"
                 android:title="@string/auto_mode"
                 android:checkable="true"/>
             <item
-                android:id="@+id/advanced_mode"
+                android:id="@+id/nav_advanced_mode"
                 android:icon="@drawable/ic_menu_send"
                 android:title="@string/advanced_mode"
                 android:checkable="true"/>
@@ -39,10 +44,10 @@
     <item android:title="@string/others">
         <menu>
             <item
-                android:id="@+id/help"
+                android:id="@+id/nav_using_help"
                 android:title="@string/help"/>
             <item
-                android:id="@+id/about"
+                android:id="@+id/nav_about"
                 android:title="@string/about"/>
         </menu>
     </item>

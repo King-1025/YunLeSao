@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/file_item_height"
+    android:orientation="vertical"
+    android:background="@color/colorItemBackgroundNormal">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="3dp">
+    <LinearLayout
+        android:id="@+id/icon_layout"
+        android:layout_marginLeft="5dp"
+        android:layout_width="@dimen/file_icon_width_and_height"
+        android:layout_height="@dimen/file_icon_width_and_height"
+        android:orientation="vertical"
+        android:gravity="center">
+        <ImageView
+            android:id="@+id/file_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/file_tilte"
+        android:layout_toRightOf="@id/icon_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text="title"
+        android:textSize="@dimen/file_title_text_size"
+        android:minHeight="@dimen/file_subtitle_max_height"
+        android:paddingLeft="15dp"
+        android:singleLine="true"
+        android:ellipsize="middle"/>
+    <TextView
+        android:paddingLeft="15dp"
+        android:id="@+id/file_subtitle"
+        android:layout_toRightOf="@id/icon_layout"
+        android:layout_below="@id/file_tilte"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text="subtitle"
+        android:textSize="@dimen/file_subtitle_text_size"
+        android:maxHeight="@dimen/file_subtitle_max_height"
+        android:singleLine="true"
+        android:ellipsize="middle"/>
+</RelativeLayout>
+<View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/colorViewPagerBase"/>
+</LinearLayout>

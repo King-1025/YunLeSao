@@ -1,13 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/wordbar_count"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/history_text_size"
-        android:text="词库"/>
-</LinearLayout>
+        android:gravity="center"
+        android:textSize="@dimen/default_text_size"
+        android:layout_alignParentBottom="true"
+        android:text="总计:0条"
+        android:layout_marginBottom="5dp"/>
+    <View
+        android:id="@+id/wordbar_panel_line"
+        android:layout_above="@id/wordbar_count"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorViewPagerBase"/>
+    <king.yunlesao.ui.view.ListWordBarView
+        android:id="@+id/list_words"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/wordbar_count"
+        android:listSelector="#00000000">
+    </king.yunlesao.ui.view.ListWordBarView>
+</RelativeLayout>

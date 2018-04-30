@@ -314,20 +314,12 @@ public class HomeFragment extends BasedFragment implements
         }
     }
 
-    private void isOnlyShowHomeFragment(boolean is){
-        MainActivity ma= (MainActivity) mActivity;
-        boolean isVisibility=!is;
-        //ma.setToolbarVisibility(isVisibility);
-        ma.setbottomNavigationVisibility(isVisibility);
-        ma.setleftNavigationVisibility(isVisibility);
-    }
-
     @Override
     public void changeViewVisibility(int flag,Object args) {
             switch (flag){
                 case FLAG_NOEMAL:
                    // if(isNormal)return;
-                    isOnlyShowHomeFragment(false);
+                    isOnlyShowChildFragment(false);
                     top_viewpager.setVisibility(View.VISIBLE);
                     startAutoShow(1000);
                     isNormal=true;
@@ -335,7 +327,7 @@ public class HomeFragment extends BasedFragment implements
                 case FLAG_ONLY_SHOW_HOME_FRAGMENT:
                    // if(!isNormal)return;
                     stopAutoShow();
-                    isOnlyShowHomeFragment(true);
+                    isOnlyShowChildFragment(true);
                     top_viewpager.setVisibility(View.INVISIBLE);
                     isNormal=false;
                     break;

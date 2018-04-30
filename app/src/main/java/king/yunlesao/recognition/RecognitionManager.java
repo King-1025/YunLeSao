@@ -258,7 +258,7 @@ public class RecognitionManager implements ServiceListener{
     private void notifyResult(String result,int type){
         if(recognitionEventNotify!=null){
             recognitionEventNotify.onRecognitionResult(result,type);
-            Toast.makeText(context," recognitionEventNotify:onRecognitionResult(result);",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context," recognitionEventNotify:onRecognitionResult(result);",Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(context,"recognitionEventNotify is null",Toast.LENGTH_SHORT).show();
         }

@@ -19,6 +19,8 @@ import king.yunlesao.ui.iface.MainActionListener;
 import king.yunlesao.ui.iface.RecognitionEventNotify;
 import king.yunlesao.ui.iface.TranslateEventNotify;
 import king.yunlesao.ui.iface.ViewChanger;
+import king.yunlesao.utils.SettingManager;
+import king.yunlesao.word.WordBarManager;
 
 /**
  * Created by King on 2018/1/3.
@@ -36,6 +38,7 @@ public class AbilityFragment extends BasedFragment implements RecognitionEventNo
     private static ImageCaptureManager imageCaptureManager;
     private static RecognitionManager recognitionManager;
     private static TranslateManager translateManager;
+    private static WordBarManager wordBarManager;
 
     private boolean isNormal=true;
     private static boolean isInit=false;
@@ -58,6 +61,9 @@ public class AbilityFragment extends BasedFragment implements RecognitionEventNo
             recognitionManager.release(); //释放识别任务占用的资源
             isRelease=true;
         }
+        if(wordBarManager!=null){
+            wordBarManager.release();
+        }
     }
 
     private void initAllManagers(){
@@ -67,6 +73,7 @@ public class AbilityFragment extends BasedFragment implements RecognitionEventNo
         imageCaptureManager=new ImageCaptureManager(mActivity);
         recognitionManager=new RecognitionManager(mActivity);
         translateManager=new TranslateManager(mActivity);
+        wordBarManager=new WordBarManager(mActivity);
         //初始化主Action监听接口
         setMainActionListener((MainActionListener)mActivity);
         //获取Token
@@ -111,8 +118,11 @@ public class AbilityFragment extends BasedFragment implements RecognitionEventNo
         return getRecognitionManager().isHasGotToken();
     }
 
-    public Bundle getDefaultTranslateType(){
-        return TranslateManager.getTranslateType(TranslateManager.TRANSLATE_ZH_TO_EN);
+    public int getDefaultScanfType(){
+        return  SettingManager.getScanfType(mActivity.getApplicationContext());
+    }
+    public int getDefaultTranslateType(){
+        return SettingManager.getTranslateType(mActivity.getApplicationContext());
     }
 
     public String getDefaultScanfImagePath(){
@@ -142,6 +152,10 @@ public class AbilityFragment extends BasedFragment implements RecognitionEventNo
 
     public static TranslateManager getTranslateManager() {
         return translateManager;
+    }
+
+    public static WordBarManager getWordBarManager() {
+        return wordBarManager;
     }
 
     public boolean isNormal() {
@@ -194,13 +208,13 @@ public class AbilityFragment extends BasedFragment implements RecognitionEventNo
         }
     }
 
-    public void updateImage(ImageView iv, String path){
+    protected void updateImage(ImageView iv, String path){
         if(ImageCaptureManager.checkImagePath(path)){
             Bitmap bitmap= BitmapFactory.decodeFile(path);
             iv.setImageBitmap(bitmap);
         }else{
             iv.setImageBitmap(null);
-            Toast.makeText(mActivity,"更新图片失败！"+path,Toast.LENGTH_SHORT).show();
+            Toast.makeText(mActivity,"更新失败，图片无效！"+path,Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -138,4 +138,12 @@ public class BasedFragment extends Fragment {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    protected void isOnlyShowChildFragment(boolean is){
+        MainActivity ma= (MainActivity) mActivity;
+        boolean isVisibility=!is;
+        //ma.setToolbarVisibility(isVisibility);
+        ma.setbottomNavigationVisibility(isVisibility);
+        ma.setleftNavigationVisibility(isVisibility);
+    }
 }

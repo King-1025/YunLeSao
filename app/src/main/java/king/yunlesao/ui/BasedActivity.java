@@ -1,5 +1,6 @@
 package king.yunlesao.ui;
 
+import android.app.ActionBar;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -41,7 +42,10 @@ public class BasedActivity extends AppCompatActivity implements
     //设置没有标题的工具栏
     protected void setToolBarNoTitle(Toolbar toolbar){
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(null);
+        android.support.v7.app.ActionBar actionBar=getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.setTitle(null);
+        }
         Log.i(TAG,"setToolBarTitle() is called.");
     }
 

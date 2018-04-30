@@ -11,7 +11,7 @@
     <string name="about">关于我们</string>
     <string name="app_id">20180407000143698</string>
     <string name="security_key">7eflq1FNSEGlAzYwQhCY</string>
-
+    <string name="about_us">本应用由寒冰小小莉及其团队提供。\n\n如果，你有任何问题,请使用以下联系方式：\n\nQQ:1543641386\n\n邮箱：1543641386@qq.com</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -21,4 +21,8 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_capture_result">CaptureResultActivity</string>
+    <string name="step_1">步骤一</string>
+    <string name="step_2">步骤二</string>
+    <string name="step_3">步骤三</string>
+
 </resources>
